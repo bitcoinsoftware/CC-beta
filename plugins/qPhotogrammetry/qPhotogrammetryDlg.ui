@@ -1,0 +1,1911 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>qPhotogrammetryDlg</class>
+ <widget class="QDialog" name="qPhotogrammetryDlg">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>935</width>
+    <height>844</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>qPhotogrammetryDlg</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="1" column="1">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="3">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="font">
+      <font>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Basic Settings</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QGroupBox" name="groupBox_11">
+         <property name="title">
+          <string>Reconstruction phases</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QRadioButton" name="radioButton">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="text">
+             <string>Generate initial pointcloud ( Surface from Motion)</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="radioButton_2">
+            <property name="text">
+             <string>Densify point cloud ( Multi View Stereovision)</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="radioButton_3">
+            <property name="text">
+             <string>Mesh &amp;&amp; Texture </string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="radioButton_4">
+            <property name="text">
+             <string>Georeference</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_12">
+         <property name="title">
+          <string>Precision</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QComboBox" name="comboBox">
+            <property name="currentIndex">
+             <number>1</number>
+            </property>
+            <item>
+             <property name="text">
+              <string>Low</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Normal</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>High</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Ultra</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_41">
+         <property name="title">
+          <string>Reconstruction server</string>
+         </property>
+         <widget class="QGroupBox" name="groupBox_42">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>30</y>
+            <width>381</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Domain name / IP</string>
+          </property>
+          <widget class="QLineEdit" name="lineEdit">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>20</y>
+             <width>371</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>127.0.0.1</string>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QGroupBox" name="groupBox_43">
+          <property name="geometry">
+           <rect>
+            <x>410</x>
+            <y>30</y>
+            <width>121</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Telnet port</string>
+          </property>
+          <widget class="QSpinBox" name="spinBox_4">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>20</y>
+             <width>111</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="maximum">
+            <number>999999</number>
+           </property>
+           <property name="value">
+            <number>12345</number>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QGroupBox" name="groupBox_44">
+          <property name="geometry">
+           <rect>
+            <x>570</x>
+            <y>30</y>
+            <width>120</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>FTP port</string>
+          </property>
+          <widget class="QSpinBox" name="spinBox_10">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>20</y>
+             <width>101</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="maximum">
+            <number>999999</number>
+           </property>
+           <property name="value">
+            <number>54321</number>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_45">
+         <property name="title">
+          <string>Server response</string>
+         </property>
+         <widget class="QWidget" name="verticalLayoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>20</y>
+            <width>891</width>
+            <height>201</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <item>
+            <widget class="QPlainTextEdit" name="plainTextEdit">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_13">
+         <property name="title">
+          <string>Photo directory</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton">
+         <property name="font">
+          <font>
+           <pointsize>9</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Select photo directory...</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>Advanced - Sparse recon</string>
+      </attribute>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>301</width>
+         <height>171</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Image Listing</string>
+       </property>
+       <widget class="QLabel" name="label_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>20</y>
+          <width>381</width>
+          <height>151</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>7</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>openMVG_main_SfMInit_ImageListing
+[-i|--imageDirectory]
+[-d|--sensorWidthDatabase]
+[-o|--outputDirectory]
+[-f|--focal] (pixels)
+[-k|--intrinsics] Kmatrix: &quot;f;0;ppx;0;f;ppy;0;0;1&quot;
+[-c|--camera_model] Camera model type:
+	 1: Pinhole
+	 2: Pinhole radial 1
+	 3: Pinhole radial 3 (default)
+	 4: Pinhole brown 2
+	 5: Pinhole with a simple Fish-eye distortion
+[-g|--group_camera_model]
+	 0-&gt; each view have it's own camera intrinsic parameters,
+	 1-&gt; (default) view can share some camera intrinsic parameters</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>190</y>
+         <width>381</width>
+         <height>211</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Compute features</string>
+       </property>
+       <widget class="QLabel" name="label_3">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>30</y>
+          <width>131</width>
+          <height>111</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>4</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>openMVG_main_ComputeFeatures
+[-i|--input_file] a SfM_Data file 
+[-o|--outdir path] 
+[Optional]
+[-f|--force] Force to recompute data
+[-m|--describerMethod]
+  (method to use to describe an image):
+   SIFT (default),
+   AKAZE_FLOAT: AKAZE with floating point descriptors,
+   AKAZE_MLDB:  AKAZE with binary descriptors
+[-u|--upright] Use Upright feature 0 or 1
+[-p|--describerPreset]
+  (used to control the Image_describer configuration):
+   NORMAL (default),   HIGH,   ULTRA: !!Can take long time!!
+[-n|--numThreads] number of parallel computations</string>
+        </property>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_14">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>20</y>
+          <width>211</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Describer method</string>
+        </property>
+        <widget class="QComboBox" name="comboBox_2">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>211</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <item>
+          <property name="text">
+           <string>SIFT</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>AKAZE_FLOAT</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>AKAZE_MLDB</string>
+          </property>
+         </item>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_15">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>70</y>
+          <width>221</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Describer precision</string>
+        </property>
+        <widget class="QComboBox" name="comboBox_3">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>211</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <item>
+          <property name="text">
+           <string>NORMAL</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>HIGH</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ULTRA</string>
+          </property>
+         </item>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_16">
+        <property name="geometry">
+         <rect>
+          <x>19</x>
+          <y>140</y>
+          <width>111</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Thread number</string>
+        </property>
+        <widget class="QSpinBox" name="spinBox">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>61</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <property name="minimum">
+          <number>-1</number>
+         </property>
+         <property name="value">
+          <number>-1</number>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QCheckBox" name="checkBox">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>120</y>
+          <width>141</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Upright features</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_2">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>190</y>
+          <width>211</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Overwrite previous results</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_3">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>440</y>
+         <width>391</width>
+         <height>311</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Compute matches</string>
+       </property>
+       <widget class="QLabel" name="label_6">
+        <property name="geometry">
+         <rect>
+          <x>210</x>
+          <y>0</y>
+          <width>171</width>
+          <height>181</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>4</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>openMVG_main_ComputeMatches
+[-i|--input_file] a SfM_Data file
+[-o|--out_dir path] output path where computed are stored
+
+[Optional]
+[-f|--force] Force to recompute data]
+[-r|--ratio] Distance ratio to discard non meaningful matches
+   0.8: (default).
+[-g|--geometric_model]
+  (pairwise correspondences filtering thanks to robust model estimation):
+   f: (default) fundamental matrix,
+   e: essential matrix,
+   h: homography matrix.
+[-v|--video_mode_matching]
+  (sequence matching with an overlap of X images)
+   X: with match 0 with (1-&gt;X), ...]
+   2: will match 0 with (1,2), 1 with (2,3), ...
+   3: will match 0 with (1,2,3), 1 with (2,3,4), ...
+[-l]--pair_list] file
+[-n|--nearest_matching_method]
+  AUTO: auto choice from regions type,
+  For Scalar based regions descriptor:
+    BRUTEFORCEL2: L2 BruteForce matching,
+    ANNL2: L2 Approximate Nearest Neighbor matching,
+    CASCADEHASHINGL2: L2 Cascade Hashing matching.
+    FASTCASCADEHASHINGL2: (default)
+      L2 Cascade Hashing with precomputed hashed regions
+     (faster than CASCADEHASHINGL2 but use more memory).
+  For Binary based descriptor:
+    BRUTEFORCEHAMMING: BruteForce Hamming matching.
+[-m|--guided_matching]
+  use the found model to improve the pairwise correspondences.
+</string>
+        </property>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_17">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>181</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Distance ratio threshold</string>
+        </property>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>69</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <property name="singleStep">
+          <double>0.100000000000000</double>
+         </property>
+         <property name="value">
+          <double>0.800000000000000</double>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_18">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>90</y>
+          <width>191</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Geometric model</string>
+        </property>
+        <widget class="QComboBox" name="comboBox_4">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>181</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <item>
+          <property name="text">
+           <string>Fundamental matrix</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Essential matrix</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Homography matrix</string>
+          </property>
+         </item>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_19">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>160</y>
+          <width>171</width>
+          <height>91</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Video mode matching</string>
+        </property>
+        <widget class="QCheckBox" name="checkBox_3">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>97</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Enabled</string>
+         </property>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_20">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>40</y>
+           <width>81</width>
+           <height>51</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Overlap</string>
+         </property>
+         <widget class="QSpinBox" name="spinBox_2">
+          <property name="geometry">
+           <rect>
+            <x>7</x>
+            <y>20</y>
+            <width>61</width>
+            <height>27</height>
+           </rect>
+          </property>
+          <property name="value">
+           <number>3</number>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_21">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>250</y>
+          <width>201</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Nearest matching method</string>
+        </property>
+        <widget class="QComboBox" name="comboBox_5">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>171</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <item>
+          <property name="text">
+           <string>AUTO</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>BRUTFORCEL2</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ANNL2</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>CASCADEHASHINGL2</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>FASTCASCADEHASHINGL2</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>BRUTEFORCEHAMMING</string>
+          </property>
+         </item>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_4">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>10</y>
+         <width>401</width>
+         <height>171</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Global structure from motion</string>
+       </property>
+       <widget class="QLabel" name="label">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>0</y>
+          <width>171</width>
+          <height>131</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>3</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>openMVG_main_GlobalSfM
+[-i|--input_file] path to a SfM_Data scene
+[-m|--matchdir] path to the matches that corresponds to the provided SfM_Data scene
+[-o|--outdir] path where the output data will be stored
+
+[Optional]
+[-r|--rotationAveraging]
+	 1 -&gt; L1 minimization
+	 2 -&gt; L2 minimization (default)
+[-t|--translationAveraging]:
+	 1 -&gt; L1 minimization
+	 2 -&gt; L2 minimization of sum of squared Chordal distances
+	 3 -&gt; SoftL1 minimization (default)
+[-f|--refineIntrinsics] Intrinsic parameters refinement option
+	 ADJUST_ALL -&gt; refine all existing parameters (default) 
+	 NONE -&gt; intrinsic parameters are held as constant
+	 ADJUST_FOCAL_LENGTH -&gt; refine only the focal length
+	 ADJUST_PRINCIPAL_POINT -&gt; refine only the principal point position
+	 ADJUST_DISTORTION -&gt; refine only the distortion coefficient(s) (if any)
+	 -&gt; NOTE: options can be combined thanks to '|'
+	 ADJUST_FOCAL_LENGTH|ADJUST_PRINCIPAL_POINT
+		-&gt; refine the focal length &amp; the principal point position
+	 ADJUST_FOCAL_LENGTH|ADJUST_DISTORTION
+		-&gt; refine the focal length &amp; the distortion coefficient(s) (if any)
+	 ADJUST_PRINCIPAL_POINT|ADJUST_DISTORTION
+		-&gt; refine the principal point position &amp; the distortion coefficient(s) (if any)</string>
+        </property>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_22">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>181</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Rotation Averaging</string>
+        </property>
+        <widget class="QComboBox" name="comboBox_6">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>151</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <item>
+          <property name="text">
+           <string>2 : L2 minimization</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>1 : L1 minimization</string>
+          </property>
+         </item>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_23">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>70</y>
+          <width>191</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Translation Averaging</string>
+        </property>
+        <widget class="QComboBox" name="comboBox_7">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>181</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <item>
+          <property name="text">
+           <string>3 : SoftL1 minimization</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>2 : L2 minimization</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>1 : L1 minimization</string>
+          </property>
+         </item>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_24">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>120</y>
+          <width>261</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Refine intrinsic</string>
+        </property>
+        <widget class="QComboBox" name="comboBox_8">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>251</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <item>
+          <property name="text">
+           <string>ADJUST_ALL</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>NONE</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ADJUST_FOCAL_LENGTH</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ADJUST_PRINCIPAL_POINT</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ADJUST_DISTORTION</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ADJUST_FOCAL_LENGTH|ADJUST_PRINCIPAL_POINT</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ADJUST_FOCAL_LENGTH|ADJUST_DISTORTION</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ADJUST_PRINCIPAL_POINT|ADJUST_DISTORTION</string>
+          </property>
+         </item>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_5">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>200</y>
+         <width>491</width>
+         <height>131</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Optional: Robust structure from known poses</string>
+       </property>
+       <widget class="QLabel" name="label_4">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>20</y>
+          <width>291</width>
+          <height>81</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>5</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>openMVG_main_ComputeStructureFromKnownPoses
+[-i|--input_file] path to a SfM_Data scene
+[-m|--match_dir] path to the features and descriptors that corresponds to the provided SfM_Data scene
+[-o|--output_file] file where the output data will be stored (i.e. path/sfm_data_structure.bin)
+
+[Optional]
+[-f|--match_file] path to a matches file (loaded pair indexes will be used)
+[-b|--bundle_adjustment] (switch) perform a bundle adjustment on the scene (OFF by default)
+[-r|--residual_threshold] maximal pixels reprojection error that will be considered for triangulations (4.0 by default)</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_4">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>97</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Enabled</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_5">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>161</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Bundle adjustment</string>
+        </property>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_25">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>70</y>
+          <width>151</width>
+          <height>80</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Residual threshold</string>
+        </property>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>69</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <property name="value">
+          <double>4.000000000000000</double>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="Line" name="line">
+       <property name="geometry">
+        <rect>
+         <x>380</x>
+         <y>0</y>
+         <width>20</width>
+         <height>761</height>
+        </rect>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>Advanced - Dense recon</string>
+      </attribute>
+      <widget class="QGroupBox" name="groupBox_6">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>621</width>
+         <height>211</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Depth map reconstruction</string>
+       </property>
+       <widget class="QLabel" name="label_5">
+        <property name="geometry">
+         <rect>
+          <x>370</x>
+          <y>0</y>
+          <width>251</width>
+          <height>171</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>5</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Depth Map Reconstruction (built on May 31 2016, 13:25:23)
+
+Usage: ./mve/apps/dmrecon/dmrecon [ OPTIONS ] SCENEDIR
+Available options: 
+  -n, --neighbors=ARG    amount of neighbor views (global view selection)
+  -m, --master-view=ARG  reconstructs given master view ID only
+  -l, --list-view=ARG    reconstructs given view IDs (given as string &quot;0-10&quot;)
+  -s, --scale=ARG        reconstruction on given scale, 0 is original
+  --max-pixels=ARG       Limit master image size [1500000]
+  -f, --filter-width=ARG  patch size for NCC based comparison [5]
+  --nocolorscale         turn off color scale
+  -i, --image=ARG        specify source image embedding [undistorted]
+  --local-neighbors=ARG  amount of neighbors for local view selection [4]
+  --keep-dz              store dz map into view
+  --keep-conf            store confidence map into view
+  -p, --writeply         use this option to write the ply file
+  --plydest=ARG          path suffix appended to scene dir to write ply files
+  --bounding-box=ARG     Six comma separated values used as AABB [disabled]
+  --progress=ARG         progress output style: 'silent', 'simple' or 'fancy'
+  --force                Reconstruct and overwrite existing depthmaps</string>
+        </property>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_27">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>20</y>
+          <width>120</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>s : Scale</string>
+        </property>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_4">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>61</width>
+           <height>27</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_28">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>60</y>
+          <width>181</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>max-pixels : Image size</string>
+        </property>
+        <widget class="QSpinBox" name="spinBox_3">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>141</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <property name="maximum">
+          <number>999999999</number>
+         </property>
+         <property name="value">
+          <number>1500000</number>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_29">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>110</y>
+          <width>120</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>local-neighbors</string>
+        </property>
+        <widget class="QSpinBox" name="spinBox_5">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>48</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <property name="value">
+          <number>4</number>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_6">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>20</y>
+          <width>97</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Keep dz</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_7">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>40</y>
+          <width>97</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Keep conf</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_8">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>70</y>
+          <width>201</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Overwrite existing results</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_30">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>90</y>
+          <width>120</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Bounding box</string>
+        </property>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_26">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>160</y>
+          <width>120</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Filter width</string>
+        </property>
+        <widget class="QSpinBox" name="spinBox_6">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>48</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <property name="value">
+          <number>5</number>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_7">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>240</y>
+         <width>621</width>
+         <height>421</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Scene to Pointset</string>
+       </property>
+       <widget class="QLabel" name="label_7">
+        <property name="geometry">
+         <rect>
+          <x>320</x>
+          <y>20</y>
+          <width>271</width>
+          <height>181</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>6</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>MVE Scene to Pointset (built on May 31 2016, 13:25:30)
+
+Generates a pointset from the scene by projecting reconstructed depth
+values in the world coordinate system.
+
+Usage: scene2pset [ OPTS ] SCENE_DIR MESH_OUT
+Available options: 
+  -d, --depthmap=ARG       Name of depth map to use [depth-L0]
+  -i, --image=ARG          Name of color image to use [undistorted]
+  -n, --with-normals       Write points with normals (PLY only)
+  -s, --with-scale         Write points with scale values (PLY only)
+  -c, --with-conf          Write points with confidence (PLY only)
+  -m, --mask=ARG           Name of mask/silhouette image to clip 3D points []
+  -v, --views=ARG          View IDs to use for reconstruction [all]
+  -b, --bounding-box=ARG   Six comma separated values used as AABB.
+  -f, --min-fraction=ARG   Minimum fraction of valid depth values [0.0]
+  -p, --poisson-normals    Scale normals according to confidence
+  -S, --scale-factor=ARG   Factor for computing scale values [2.5]
+  -F, --fssr=ARG           FSSR output, sets -nsc and -di with scale ARG</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_9">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>20</y>
+          <width>141</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Write normals</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_10">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>40</y>
+          <width>141</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Write scale</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_11">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>60</y>
+          <width>141</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Write confidence</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_12">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>80</y>
+          <width>291</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Scale normals according to confidence</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_31">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>100</y>
+          <width>91</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Scale factor</string>
+        </property>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>69</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <property name="value">
+          <double>2.500000000000000</double>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_4">
+      <attribute name="title">
+       <string>Advanced - Meshing &amp;&amp; Texturing</string>
+      </attribute>
+      <widget class="QGroupBox" name="groupBox_8">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>0</y>
+         <width>431</width>
+         <height>181</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Floating Scale Surface Reconstruction</string>
+       </property>
+       <widget class="QLabel" name="label_8">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>20</y>
+          <width>321</width>
+          <height>151</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>7</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Floating Scale Surface Reconstruction (built on May 31 2016, 13:25:35)
+
+Samples the implicit function defined by the input samples and produces a
+surface mesh. The input samples must have normals and the &quot;values&quot; PLY
+attribute (the scale of the samples). Both confidence values and vertex
+colors are optional. The final surface should be cleaned (sliver triangles,
+isolated components, low-confidence vertices) afterwards.
+
+Usage: ./mve/apps/fssrecon/fssrecon [ OPTS ] IN_PLY [ IN_PLY ... ] OUT_PLY
+Available options: 
+  -s, --scale-factor=ARG   Multiply sample scale with factor [1.0]
+  -r, --refine-octree=ARG  Refines octree with N levels [0]
+  --min-scale=ARG          Minimum scale, smaller samples are clamped
+  --max-scale=ARG          Maximum scale, larger samples are ignored
+  --interpolation=ARG      Interpolation: linear, scaling, lsderiv, [cubic]</string>
+        </property>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_32">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>91</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Scale factor</string>
+        </property>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_6">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>69</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <property name="value">
+          <double>1.000000000000000</double>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_33">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>70</y>
+          <width>120</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Refine octree</string>
+        </property>
+        <widget class="QSpinBox" name="spinBox_7">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>48</width>
+           <height>27</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_12">
+         <property name="geometry">
+          <rect>
+           <x>60</x>
+           <y>21</y>
+           <width>41</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>levels</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_34">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>120</y>
+          <width>111</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Interpolation</string>
+        </property>
+        <widget class="QComboBox" name="comboBox_9">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>111</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <item>
+          <property name="text">
+           <string>cubic</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>linear</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>scaling</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>lsderiv</string>
+          </property>
+         </item>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_9">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>190</y>
+         <width>501</width>
+         <height>281</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Mesh clean</string>
+       </property>
+       <widget class="QLabel" name="label_9">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>10</y>
+          <width>331</width>
+          <height>141</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>6</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>MVE FSSR Mesh Cleaning (built on May 31 2016, 13:25:40)
+
+The application cleans degenerated faces resulting from MC-like algorithms.
+Vertices below a confidence threshold and vertices in small isolated
+components are deleted as well.
+
+Usage: ./mve/apps/meshclean/meshclean [ OPTS ] IN_MESH OUT_MESH
+Available options: 
+  -t, --threshold=ARG      Threshold on the geometry confidence [1.0]
+  -p, --percentile=ARG     Use the nth percentile (0 - 100) as confidence threshold [disabled]
+  -c, --component-size=ARG  Minimum number of vertices per component [1000]
+  -n, --no-clean           Prevents cleanup of degenerated faces
+  --delete-scale           Delete scale attribute from mesh
+  --delete-conf            Delete confidence attribute from mesh
+  --delete-color           Delete color attribute from mesh</string>
+        </property>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_35">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>161</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Confidence Threshold</string>
+        </property>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_5">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>69</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <property name="singleStep">
+          <double>0.100000000000000</double>
+         </property>
+         <property name="value">
+          <double>1.000000000000000</double>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_36">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>70</y>
+          <width>120</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Percentile</string>
+        </property>
+        <widget class="QCheckBox" name="checkBox_13">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>97</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Enabled</string>
+         </property>
+        </widget>
+        <widget class="QSpinBox" name="spinBox_8">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>40</y>
+           <width>71</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+         <property name="value">
+          <number>10</number>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_37">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>140</y>
+          <width>181</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Minimal Component Size</string>
+        </property>
+        <widget class="QSpinBox" name="spinBox_9">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>111</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <property name="maximum">
+          <number>999999</number>
+         </property>
+         <property name="value">
+          <number>1000</number>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_38">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>190</y>
+          <width>181</width>
+          <height>91</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Reduce disk space</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QCheckBox" name="checkBox_14">
+           <property name="text">
+            <string>Delete scale</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBox_16">
+           <property name="text">
+            <string>Delete color</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBox_15">
+           <property name="text">
+            <string>Delete confidence</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_10">
+       <property name="geometry">
+        <rect>
+         <x>540</x>
+         <y>0</y>
+         <width>581</width>
+         <height>471</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Texturing</string>
+       </property>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_39">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>480</y>
+         <width>241</width>
+         <height>161</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Texturing</string>
+       </property>
+       <widget class="QGroupBox" name="groupBox_40">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>151</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Outlier removal</string>
+        </property>
+        <widget class="QComboBox" name="comboBox_10">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>141</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <item>
+          <property name="text">
+           <string>none</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>gauss_damping</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>gauss_clamping</string>
+          </property>
+         </item>
+        </widget>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_17">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>70</y>
+          <width>231</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Skip geometric visibility test</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_18">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>90</y>
+          <width>231</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Skip global seam leveling</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_19">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>110</y>
+          <width>231</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Skip local seam leveling</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBox_20">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>130</y>
+          <width>211</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Skip hole filling</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QLabel" name="label_10">
+       <property name="geometry">
+        <rect>
+         <x>430</x>
+         <y>-10</y>
+         <width>581</width>
+         <height>431</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>6</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Textures a mesh given images in form of a 3D scene.
+
+Usage: ./texrecon/build/apps/texrecon/texrecon [options] IN_SCENE IN_MESH OUT_PREFIX
+
+IN_SCENE := (SCENE_FOLDER | BUNDLE_FILE | MVE_SCENE::EMBEDDING)
+
+SCENE_FOLDER:
+Within a scene folder a .cam file has to be given for each image.
+A .cam file is structured as follows:
+    tx ty tz R00 R01 R02 R10 R11 R12 R20 R21 R22
+    f d0 d1 paspect ppx ppy
+First line: Extrinsics - translation vector and rotation matrix
+Second line: Intrinsics - focal length, distortion coefficients, pixel aspect ratio and principal point
+The focal length is the distance between camera center and image plane normalized by dividing with the larger image dimension.
+For non zero distortion coefficients the image will be undistorted prior to the texturing process. If only d0 is non zero the Noah Snavely's distortion model is assumed otherwise the distortion model of VSFM is assumed.
+The pixel aspect ratio is usually 1 or close to 1. If your SfM system doesn't output it, but outputs a different focal length in x and y direction, you have to encode this here.
+The principal point has to be given in unit dimensions (e.g. 0.5 0.5).
+
+BUNDLE_FILE:
+Currently only NVM bundle files (from VisualSFM, http://ccwu.me/vsfm/) are supported.
+Since the bundle file contains relative paths to the images please make sure you did not move them (relative to the bundle) or rename them after the bundling process.
+
+MVE_SCENE::EMBEDDING:
+This is the scene representation we use in our research group: http://www.gris.tu-darmstadt.de/projects/multiview-environment/.
+
+IN_MESH:
+The mesh that you want to texture and which needs to be in the same coordinate frame as the camera parameters. You can reconstruct one, e.g. with CMVS: http://www.di.ens.fr/cmvs/
+
+OUT_PREFIX:
+A path and name for the output files, e.g. &lt;path&gt;/&lt;to&gt;/my_textured_mesh
+Don't append an obj extension. The application does that itself because it outputs multiple files (mesh, material file, texture files).
+
+Available options: 
+  -D, --data_cost_file=ARG          Skip calculation of data costs and use the ones provided in the given file
+  -L, --labeling_file=ARG           Skip view selection and use the labeling provided in the given file
+  -d, --data_term=ARG               Data term: {area, gmi} [gmi]
+  -s, --smoothness_term=ARG         Smoothness term: {potts} [potts]
+  -o, --outlier_removal=ARG         Photometric outlier (pedestrians etc.) removal method: {none, gauss_damping, gauss_clamping} [none]
+  -v, --view_selection_model        Write out view selection model [false]
+  --skip_geometric_visibility_test  Skip geometric visibility test based on ray intersection [false]
+  --skip_global_seam_leveling       Skip global seam leveling [false]
+  --skip_local_seam_leveling        Skip local seam leveling (Poisson editing) [false]
+  --skip_hole_filling               Skip hole filling [false]
+  --keep_unseen_faces               Keep unseen faces [false]
+  --write_timings                   Write out timings for each algorithm step (OUT_PREFIX + _timings.csv)
+  --no_intermediate_results         Do not write out intermediate results</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_5">
+      <attribute name="title">
+       <string>Advanced - Georeferencing</string>
+      </attribute>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
