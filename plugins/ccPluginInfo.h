@@ -122,8 +122,13 @@ public:
 		{
 			// Choose a reasonable default to look in
 			//pluginPaths << "/usr/lib/cloudcompare/plugins";
-			pluginPaths << (binDir.absolutePath() +"/../plugins" );
-			pluginPaths << (binDir.absolutePath() + "/../plugins/qPhotogrammetry");
+			binDir.cdUp();
+			pluginPaths << (binDir.absolutePath() +"/plugins" );
+			binDir.cd("plugins");
+			for (QString dir : binDir.entryList(QDir::Dirs|QDir::NoDotAndDotDot))
+			{
+				pluginPaths<<binDir.absolutePath()+"/"+dir;
+			}
 		}
 #else
 		#warning Need to specify the plugin path for this OS.
