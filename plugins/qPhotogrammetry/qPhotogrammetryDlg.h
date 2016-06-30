@@ -2,7 +2,16 @@
 #define QPHOTOGRAMMETRYDLG_H
 
 #include <QJsonObject>
+#include <QFile>
 #include "ui_qPhotogrammetryDlg.h"
+
+const QString p1describer_method[]={"SIFT","AKAZE_FLOAT","AKAZE_MLDB"};
+const QString p1describer_preset[]={"NORMAL","HIGH","ULTRA"};
+const QString p2geometric_model[]={"f","e","h"};
+const QString p2nearest_matching_method[]={"AUTO","BRUTEFORCEL2","ANNL2","CASCADEHASHINGL2","FASTCASCADEHASHINGL2","BRUTEFORCEHAMMING"};
+const QString p3refine_intrinsic[]={"ADJUST_ALL","NONE","ADJUST_FOCAL_LENGTH","ADJUST_PRINCIPAL_POINT","ADJUST_DISTORTION","ADJUST_FOCAL_LENGTH|ADJUST_PRINCIPAL_POINT","ADJUST_FOCAL_LENGTH|ADJUST_DISTORTION","ADJUST_PRINCIPAL_POINT|ADJUST_DISTORTION"};
+const QString p4interpolation[]={"cubic","linear","scaling","lsderiv"};
+const QString p5outlier_removal[]={"none","gauss_damping","gauss_clamping"};
 
 namespace Ui {
 class qPhotogrammetryDlg;
@@ -13,6 +22,7 @@ class qPhotogrammetryDlg : public QDialog, public Ui::qPhotogrammetryDlg
     Q_OBJECT
 
 public:
+    QFile logfile;
     QString pathToFolder = QString();
     QJsonObject setting_json_obj;
     explicit qPhotogrammetryDlg(QWidget *parent = 0);

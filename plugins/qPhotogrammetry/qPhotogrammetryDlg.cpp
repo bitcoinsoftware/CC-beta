@@ -1,6 +1,9 @@
 ﻿#include "qPhotogrammetryDlg.h"
 #include <QFileDialog>
+#include <QTextStream>
+#include <QFile>
 #include <QJsonDocument>
+#include <QJsonValue>
 #include <iostream>
 #include <string>
 #include "SocketStub.h"
@@ -10,6 +13,10 @@ qPhotogrammetryDlg::qPhotogrammetryDlg(QWidget *parent) :
     ui(new Ui::qPhotogrammetryDlg)
 {
     ui->setupUi(this);
+    logfile.setFileName("/home/szymon/CClog.txt");
+    if (!logfile.open(QIODevice::Truncate | QIODevice::WriteOnly)) {
+        QTextStream(stdout)<<"couldn't open file";
+    }
     connect(this, SIGNAL(get_connected()), this, SLOT(connectToHost()));
     //connect(t->socket(), SIGNAL(get_disconnected()), this, SLOT(sockDisconnected()));
     //MyTelnetWidget mtw;
@@ -18,6 +25,7 @@ qPhotogrammetryDlg::qPhotogrammetryDlg(QWidget *parent) :
 
 qPhotogrammetryDlg::~qPhotogrammetryDlg()
 {
+    logfile.close();
     delete ui;
 }
 
@@ -35,30 +43,28 @@ QJsonObject qPhotogrammetryDlg::get_sparse_recon_settings()
 {
     QJsonObject computefeatures
     {
-          {"describerMethod",   ui->comboBox_2->currentText()},
-          {"describerPreset",   ui->comboBox_3->currentText()},
-          {"upright",           ui->checkBox->isChecked()},
+          {"describerMethod",   p1describer_method[ui->comboBox_2->currentIndex()]},
+          {"describerPreset",   p1describer_preset[ui->comboBox_3->currentIndex()]},
+          {"upright",           (ui->checkBox->isChecked()?"1":"0")},
           {"numThreads",        ui->spinBox->value()},
-          {"force",             ui->checkBox_2->isChecked()}
+          {"force",             (ui->checkBox_2->isChecked()?"1":"0")}
     };
     QJsonObject computematches
     {
           {"ratio",                         ui->doubleSpinBox->value()},
-          {"geometric_model",               ui->comboBox_4->currentText()},
-          {"video_mode_matching",           ui->checkBox_3->isChecked()},
-          {"video_mode_matching-overlap",   ui->spinBox_2->value()},
-          {"nearest_matching_method",       ui->comboBox_5->currentText()}
+          {"geometric_model",               p2geometric_model[ui->comboBox_4->currentIndex()]},
+          {"video_mode_matching",           (ui->checkBox_3->isChecked()?ui->spinBox_2->value():0)},
+          {"nearest_matching_method",       p2nearest_matching_method[ui->comboBox_5->currentIndex()]}
     };
     QJsonObject globalsfm
     {
-          {"rotationAveraging",     ui->comboBox_6->currentText()},
-          {"translationAveraging",  ui->comboBox_7->currentText()},
-          {"refineIntrinsics",      ui->comboBox_8->currentText()}
+          {"rotationAveraging",     2-ui->comboBox_6->currentIndex()},
+          {"translationAveraging",  3-ui->comboBox_7->currentIndex()},
+          {"refineIntrinsics",      p3refine_intrinsic[ui->comboBox_8->currentIndex()]}
     };
     QJsonObject computestructurefromknownposes
     {
-          {"enabled",             ui->checkBox_4->isChecked()},
-          {"bundle_adjustment",   ui->checkBox_5->isChecked()},
+          {"_1",   (ui->checkBox_5->isChecked()?"-b":"")},
           {"residual_threshold",  ui->doubleSpinBox_2->value()}
     };
 
@@ -67,6 +73,7 @@ QJsonObject qPhotogrammetryDlg::get_sparse_recon_settings()
           {"ComputeFeatures",               computefeatures},
           {"ComputeMatches",                computematches},
           {"GlobalSfM",                     globalsfm},
+          {"compute_robust",                ui->checkBox_4->isChecked()},
           {"ComputeStructureFromKnownPoses",computestructurefromknownposes}
     };
     return settings;
@@ -74,23 +81,28 @@ QJsonObject qPhotogrammetryDlg::get_sparse_recon_settings()
 
 QJsonObject qPhotogrammetryDlg::get_dense_recon_settings()
 {
+    QString scale="-s"+QString::number(ui->doubleSpinBox_4->value());
+    QString neighbors="-n"+QString::number(ui->spinBox_5->value());
+    QString pixels="--max-pixels="+QString::number(ui->spinBox_6->value());
+    QString filter="-f"+QString::number(ui->spinBox_6->value());
     QJsonObject dmrecon
     {
-        {"scale",           ui->doubleSpinBox_4->value()},
-        {"max-pixels",      ui->spinBox_3->value()},
-        {"local-neighbors", ui->spinBox_5->value()},
-        {"filter-width",    ui->spinBox_6->value()},
-        {"keep-dz",         ui->checkBox_6->isChecked()},
-        {"keep-conf",       ui->checkBox_7->isChecked()},
-        {"force",           ui->checkBox_8->isChecked()}
+        {"_scale",          scale},
+        {"_max pixels",     pixels},
+        {"_neighbors",      neighbors},
+        {"_filter width",   filter},
+        {"_dz",             (ui->checkBox_6->isChecked()?"--keep-dz":"")},
+        {"_conf",           (ui->checkBox_7->isChecked()?"--keep_conf":"")},
+        {"_force",          (ui->checkBox_8->isChecked()?"--force":"")}
     };
+    QString scale_factor="-S"+QString::number(ui->doubleSpinBox_3->value());
     QJsonObject scene2pset
     {
-        {"with-normals",    ui->checkBox_9->isChecked()},
-        {"with-scale",      ui->checkBox_10->isChecked()},
-        {"with-conf",       ui->checkBox_11->isChecked()},
-        {"poisson-normals", ui->checkBox_12->isChecked()},
-        {"scale-factor",    ui->doubleSpinBox_3->value()}
+        {"_normals",        (ui->checkBox_9->isChecked()?"-n":"")},
+        {"_scale",          (ui->checkBox_10->isChecked()?"-s":"")},
+        {"_conf",           (ui->checkBox_11->isChecked()?"-c":"")},
+        {"_poisson normals",(ui->checkBox_12->isChecked()?"-p":"")},
+        {"_scale factor",   scale_factor}
     };
 
     QJsonObject settings
@@ -103,29 +115,35 @@ QJsonObject qPhotogrammetryDlg::get_dense_recon_settings()
 
 QJsonObject qPhotogrammetryDlg::get_mesh_tex_settings()
 {
+    QString scale_factor="-s"+QString::number(ui->doubleSpinBox_6->value());
+    QString refine="-r"+QString::number(ui->spinBox_7->value());
     QJsonObject fssrecon
     {
-        {"scale-factor",    ui->doubleSpinBox_6->value()},
-        {"refine-octree",   ui->spinBox_7->value()},
-        {"interpolation",   ui->comboBox_9->currentText()}
+        {"_scale factor",   scale_factor},
+        {"refine-octree",   refine},
+        {"interpolation",   p4interpolation[ui->comboBox_9->currentIndex()]}
     };
+    QString threshold="-t"+QString::number(ui->doubleSpinBox_5->value());
+    QString percentile=(ui->checkBox_13->isChecked()?QString("-p"+QString::number(ui->spinBox_8->value())):QString(""));
+    QString component_size="-c"+QString::number(ui->spinBox_9->value());
+    
     QJsonObject meshclean
     {
-        {"threshold",           ui->doubleSpinBox_5->value()},
-        {"percentile-enabled",  ui->checkBox_13->isChecked()},
-        {"percentile",          ui->spinBox_8->value()},
-        {"component-size",      ui->spinBox_9->value()},
-        {"delete-scale",        ui->checkBox_14->isChecked()},
-        {"delete-conf",         ui->checkBox_15->isChecked()},
-        {"delete-color",        ui->checkBox_16->isChecked()}
+        {"_threshold",      threshold},
+        {"_percentile",     percentile},
+        {"_component size", component_size},
+        {"_delete scale",   (ui->checkBox_14->isChecked()?"--delete-scale":"")},
+        {"_delete conf",    (ui->checkBox_15->isChecked()?"--delete-conf":"")},
+        {"_delete color",   (ui->checkBox_16->isChecked()?"--delete-color":"")}
     };
+    QString removal="-o"+p5outlier_removal[ui->comboBox_10->currentIndex()];
     QJsonObject texrecon
     {
-        {"outlier_removal",                 ui->comboBox_10->currentText()},
-        {"skip_geometric_visibility_test",  ui->checkBox_17->isChecked()},
-        {"skip_global_seam_leveling",       ui->checkBox_18->isChecked()},
-        {"skip_local_seam_leveling",        ui->checkBox_19->isChecked()},
-        {"skip_hole_filling",               ui->checkBox_20->isChecked()}
+        {"_outlier_removal",                 removal},
+        {"_skip_geometric_visibility_test", (ui->checkBox_17->isChecked()?"--skip_geometric_visibility_test":"")},
+        {"_skip_global_seam_leveling",      (ui->checkBox_18->isChecked()?"--skip_global_seam_leveling":"")},
+        {"_skip_local_seam_leveling",       (ui->checkBox_19->isChecked()?"--skip_local_seam_leveling":"")},
+        {"_skip_hole_filling",              (ui->checkBox_20->isChecked()?"--skip_hole_filling":"")}
     };
     QJsonObject settings
     {
@@ -233,7 +251,8 @@ void qPhotogrammetryDlg::on_buttonBox_accepted()
 
 void qPhotogrammetryDlg::on_buttonBox_rejected()
 {
-    this->setResult(QDialog::Rejected);this->close();
+    this->setResult(QDialog::Rejected);
+    this->close();
 }
 
 void qPhotogrammetryDlg::on_comboBox_currentIndexChanged(const QString &arg1)
@@ -320,16 +339,23 @@ void qPhotogrammetryDlg::connectToHost()
     QString port = QString::number(ui->spinBox_4->value());
     ui->plainTextEdit->insertPlainText(QString("Connecting to :")+ domain + QString(" On port :") + port + QString("..."));
 
+    QTextStream log(&logfile);
     SocketStub ss(domain.toStdString(), port.toStdString());
-    if (ss.status == -1){
-        ui->plainTextEdit->insertPlainText(QString("\nSocket status equal -1. Error."));
+    if (ss.status == -1) {
+        if (domain=="127.0.0.1") {
+            //start server
+        } else {
+            ui->plainTextEdit->insertPlainText(QString("\nSocket status equal -1. Error."));
+        }
     }
-    else{
+    else {
         ui->plainTextEdit->insertPlainText(QString("\nConected to server, now sending message..."));
-        int buffLen = 1000;
-        //char response[buffLen];
-        std::string response(ss.send_command(setting_json_obj, buffLen));
-        ui->plainTextEdit->insertPlainText(QString::fromStdString(response));
+        QString response(ss.send_command(setting_json_obj));
+        log<<QString(QJsonDocument(setting_json_obj).toJson(QJsonDocument::Indented));
+        ui->plainTextEdit->insertPlainText(response);
+        QString response2(ss.send_files(QString(ui->label_11->text())));
+        ui->plainTextEdit->insertPlainText(response2);
+        log<<response2;
         ss.close_socket();
         ui->plainTextEdit->insertPlainText("/nclosed");
     }

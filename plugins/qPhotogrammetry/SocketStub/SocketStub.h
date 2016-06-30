@@ -2,6 +2,7 @@
 #define SOCKETSTUB_H
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QPlainTextEdit>
 #include <string>
 #include <cstring>      // Needed for memset
 #include <netdb.h>      // Needed for the socket functions
@@ -12,7 +13,9 @@ public:
     SocketStub( );
     SocketStub(std::string domain, std::string port);
 
-    char * send_command(QJsonObject jsonObject, int buffLen);
+    QString send_command(QJsonObject jsonObject);
+    char* send_f(QByteArray file, QString suffix);
+    QString send_files(QString files);
     void close_socket();
 
     int status;

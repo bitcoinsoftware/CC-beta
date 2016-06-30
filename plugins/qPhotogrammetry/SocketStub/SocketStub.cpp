@@ -2,6 +2,10 @@
 #include <string>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QStringList>
+#include <QPlainTextEdit>
+#include <QFile>
+#include <QDir>
 
 SocketStub::SocketStub()
 {}
@@ -35,7 +39,7 @@ SocketStub::SocketStub( std::string domain, std::string port)
 
 }
 
-char * SocketStub::send_command(QJsonObject jsonObject, int buffLen)
+QString SocketStub::send_command(QJsonObject jsonObject)
 {
     QJsonDocument jsonDoc(jsonObject);
     QString strJson(jsonDoc.toJson());
@@ -57,8 +61,8 @@ char * SocketStub::send_command(QJsonObject jsonObject, int buffLen)
     //ui->plainTextEdit->insertPlainText(QString( "Waiting to recieve data..."));
 
     ssize_t bytes_recieved;
-    char incomming_data_buffer[buffLen];
-    bytes_recieved = recv(socketfd, incomming_data_buffer, buffLen, 0);
+    char incomming_data_buffer[1000];
+    bytes_recieved = recv(socketfd, incomming_data_buffer, 999, 0);
 
     // If no data arrives, the program will just wait here until some data arrives.
     //if (bytes_recieved == 0) incomming_data_buffer = 'host shut down.';
@@ -69,15 +73,67 @@ char * SocketStub::send_command(QJsonObject jsonObject, int buffLen)
     incomming_data_buffer[bytes_recieved] = '\0';
     //ui->plainTextEdit->insertPlainText(QString( incomming_data_buffer ));
     //ui->plainTextEdit->insertPlainText(QString( "Receiving complete. Closing socket..." ));
+    return QString(incomming_data_buffer);
+}
+
+char* SocketStub::send_f(QByteArray file, QString suffix) {
+    char buffer[1001];
+    buffer[1000]='\0';
+    int size=file.length();
+    //size=20;
+    char start[10];
+    start[0]='s';
+    start[1]=size>>24;
+    start[2]=size>>16;
+    start[3]=size>>8;
+    start[4]=size;
+    start[5]=(suffix.length()>0?suffix.toLatin1().data()[0]:'\0');
+    start[6]=(suffix.length()>1?suffix.toLatin1().data()[1]:'\0');
+    start[7]=(suffix.length()>2?suffix.toLatin1().data()[2]:'\0');
+    start[8]=(suffix.length()>3?suffix.toLatin1().data()[3]:'\0');
+    start[9]=(suffix.length()>4?suffix.toLatin1().data()[4]:'\0');
+    send(socketfd, start, 10, 0);
+    recv(socketfd, buffer, 1000, 0);
+    long long sent=0;
+    while (sent<size) {
+        sent+=send(socketfd, file.data()+sent, size-sent, 0);
+    }
+    
+    return buffer;
+}
+
+/**
+ * function sending files to a server
+ * @files list of files
+ * @buffLen length of buffer with returning message
+ */
+QString SocketStub::send_files(QString files) {
+    QDir dir(files);
+    QStringList list = dir.entryList(QDir::Files);
+    ssize_t bytes_recieved;
+    QString incomming_data_buffer("\nFile list from "+files+":\n");
+    //send files
+    for (QString s : list) {
+        QString filename=dir.absolutePath()+"/"+s;
+        //open file from path s
+        QFile f(filename);
+        int i=0;
+        if (f.open(QIODevice::ReadOnly)) {//read and send file
+            incomming_data_buffer+=filename+"\n";
+            QByteArray file_b = f.readAll();
+            f.close();
+            char* answer=send_f(file_b,QFileInfo(f).suffix());
+            incomming_data_buffer+=QString(answer[0])+QString::number(((answer[1]*256+answer[2])*256+answer[3])*256+answer[4])+QString(answer[5])+QString(answer[6])+QString(answer[7])+QString(answer[8])+QString(answer[9])+"\n";
+        }
+    }
+    char end[10]="ending   ";
+    send(socketfd, end, 10, 0);
     return incomming_data_buffer;
 }
 
 void SocketStub::close_socket()
 {
     char msg[5];
-    strcpy(msg, "exit");
-    int len = strlen(msg);
-    ssize_t bytes_sent = send(socketfd, msg, len, 0);
     //freeaddrinfo(host_info_list);
     //close(socketfd);
     //socketfd.close();
