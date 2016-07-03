@@ -110,7 +110,6 @@ char* SocketStub::send_f(QByteArray file, QString suffix) {
 QString SocketStub::send_files(QString files) {
     QDir dir(files);
     QStringList list = dir.entryList(QDir::Files);
-    ssize_t bytes_recieved;
     QString incomming_data_buffer("\nFile list from "+files+":\n");
     //send files
     for (QString s : list) {
@@ -131,9 +130,43 @@ QString SocketStub::send_files(QString files) {
     return incomming_data_buffer;
 }
 
+char SocketStub::get_result(char stage) {
+    if (stage==-1) {
+        char next;
+        unsigned char info[5];
+        recv(socketfd, &next, 1, 0);
+        while (next=='f') {
+            recv(socketfd, info, 5, 0);
+            char filename[257];
+            recv(socketfd, filename, info[4], 0);
+            filename[info[4]]='\0';
+            //create file with in dir [bindir]/PhotogrammetryResults and open it
+            QFile f(QDir::currentPath()+"/PhotogrammetryResults/"+QString(filename));
+            f.open(QIODevice::WriteOnly | QIODevice::Truncate);
+            int size = ((info[0]*256+info[1])*256+info[2])*256+info[3];
+            int dl = 0;
+            char buffer[4096];
+            printf("getting file starts\n");
+            while (dl<size) {
+                int received = recv(socketfd, buffer, (size-dl>4096 ? 4096 : size-dl), 0);
+                dl += received;
+                f.write(buffer,received);
+                printf("got %d\n",received);
+            }
+            printf("file %s got\n",filename);
+            recv(socketfd, &next, 1, 0);
+        }
+        return 0;
+    } else {
+        char st;
+        recv(socketfd, &st, 1, 0);
+        if (stage!=st) printf("stage received is %d\n",st);
+        return st;
+    }
+}
+
 void SocketStub::close_socket()
 {
-    char msg[5];
     //freeaddrinfo(host_info_list);
     //close(socketfd);
     //socketfd.close();

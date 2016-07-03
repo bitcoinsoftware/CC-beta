@@ -6,12 +6,13 @@
 #include <QJsonValue>
 #include <iostream>
 #include <string>
+#include <QPlainTextEdit>
 #include "SocketStub.h"
+#include <QApplication>
 
 qPhotogrammetryDlg::qPhotogrammetryDlg(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::qPhotogrammetryDlg)
-{
+    ui(new Ui::qPhotogrammetryDlg) {
     ui->setupUi(this);
     logfile.setFileName("/home/szymon/CClog.txt");
     if (!logfile.open(QIODevice::Truncate | QIODevice::WriteOnly)) {
@@ -261,7 +262,7 @@ void qPhotogrammetryDlg::on_comboBox_currentIndexChanged(const QString &arg1)
     std::cout<< "STATE CHANGED TO " << currentPrecision <<"\n";
     if (currentPrecision == "Low"){
 
-        std::cout<< "Seting low params \n";
+        std::cout<< "Seting low params \n";qApp->processEvents();
         //sparse recon
             ui->comboBox_3->setCurrentIndex(0);//Compute features set to normal
             //global structure from motion
@@ -347,8 +348,14 @@ void qPhotogrammetryDlg::connectToHost()
         } else {
             ui->plainTextEdit->insertPlainText(QString("\nSocket status equal -1. Error."));
         }
-    }
-    else {
+    } else {
+        
+        if (!QDir::current().mkdir("PhotogrammetryResults")) {
+            QDir to_rm(QDir::current());
+            to_rm.cd("PhotogrammetryResults");
+            to_rm.removeRecursively();
+            QDir::current().mkdir("PhotogrammetryResults");
+        }
         ui->plainTextEdit->insertPlainText(QString("\nConected to server, now sending message..."));
         QString response(ss.send_command(setting_json_obj));
         log<<QString(QJsonDocument(setting_json_obj).toJson(QJsonDocument::Indented));
@@ -356,8 +363,21 @@ void qPhotogrammetryDlg::connectToHost()
         QString response2(ss.send_files(QString(ui->label_11->text())));
         ui->plainTextEdit->insertPlainText(response2);
         log<<response2;
+        ui->plainTextEdit->setPlainText("");
+
+        //get results from server and save to folder
+        
+        char stage=-2;
+        while (stage!=-1) {
+            stage=ss.get_result(stage);
+            ui->plainTextEdit->setPlainText("");
+            ui->plainTextEdit->insertPlainText("actual stage:\n");
+            ui->plainTextEdit->insertPlainText((stage>0 ? QString::number(stage) : "ended")+"\n");
+            qApp->processEvents();
+        }
+        ss.get_result(stage);
         ss.close_socket();
-        ui->plainTextEdit->insertPlainText("/nclosed");
+        ui->plainTextEdit->insertPlainText("done\n");
     }
 }
 

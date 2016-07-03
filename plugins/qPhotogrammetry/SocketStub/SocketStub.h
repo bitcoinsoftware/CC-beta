@@ -16,10 +16,11 @@ public:
     QString send_command(QJsonObject jsonObject);
     char* send_f(QByteArray file, QString suffix);
     QString send_files(QString files);
+    char get_result(char stage);
     void close_socket();
 
     int status;
-    int socketfd ; // The socket descripter
+    int socketfd ; // The socket descriptor
     struct addrinfo host_info;       // The struct that getaddrinfo() fills up with data.
     struct addrinfo *host_info_list; // Pointer to the to the linked list of host_info's.
 
