@@ -9,15 +9,12 @@
 #include <QPlainTextEdit>
 #include "SocketStub.h"
 #include <QApplication>
+#include <QTime>
 
 qPhotogrammetryDlg::qPhotogrammetryDlg(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::qPhotogrammetryDlg) {
     ui->setupUi(this);
-    logfile.setFileName("/home/szymon/CClog.txt");
-    if (!logfile.open(QIODevice::Truncate | QIODevice::WriteOnly)) {
-        QTextStream(stdout)<<"couldn't open file";
-    }
     connect(this, SIGNAL(get_connected()), this, SLOT(connectToHost()));
     //connect(t->socket(), SIGNAL(get_disconnected()), this, SLOT(sockDisconnected()));
     //MyTelnetWidget mtw;
@@ -37,7 +34,7 @@ void qPhotogrammetryDlg::on_pushButton_clicked()
                                                     "~/",
                                                     QFileDialog::ShowDirsOnly
                                                     | QFileDialog::DontResolveSymlinks);
-    ui->label_11->setText(pathToFolder);
+    ui->label_11->setText("Input directory: "+pathToFolder);
 }
 
 QJsonObject qPhotogrammetryDlg::get_sparse_recon_settings()
@@ -171,8 +168,13 @@ void qPhotogrammetryDlg::on_buttonBox_accepted()
         ui->pushButton->setAutoFillBackground(true);
         ui->pushButton->setPalette(pal);
         ui->pushButton->update();
-    }else
-    {
+    } else if (pathToOutputFolder.trimmed().isEmpty()) {
+        QPalette pal = ui->pushButton_2->palette();
+        pal.setColor(QPalette::Button, QColor(Qt::red));
+        ui->pushButton_2->setAutoFillBackground(true);
+        ui->pushButton_2->setPalette(pal);
+        ui->pushButton_2->update();
+    } else {
         //TODO read all widget states
         if (ui->radioButton->isChecked()){  //if only initial reconstruction choosen
             QJsonObject object
@@ -228,8 +230,7 @@ void qPhotogrammetryDlg::on_buttonBox_accepted()
         {
             {"path_to_photo_folder", ui->label_11->text()},
             {"domain", ui->lineEdit->text()},
-            {"telnet_port", ui->spinBox_4->value()},
-            {"ftp_port", ui->spinBox_10->value()}
+            {"telnet_port", ui->spinBox_4->value()}
         };
         //setting_json_obj.insert(QString("server"), object);
 
@@ -258,7 +259,7 @@ void qPhotogrammetryDlg::on_buttonBox_rejected()
 
 void qPhotogrammetryDlg::on_comboBox_currentIndexChanged(const QString &arg1)
 {
-    std::string currentPrecision = ui->comboBox->currentText().toStdString();
+    /*std::string currentPrecision = ui->comboBox->currentText().toStdString();
     std::cout<< "STATE CHANGED TO " << currentPrecision <<"\n";
     if (currentPrecision == "Low"){
 
@@ -331,53 +332,88 @@ void qPhotogrammetryDlg::on_comboBox_currentIndexChanged(const QString &arg1)
             ui->spinBox_7->setValue(3); // refine octree
        //texturing
             ui->comboBox_10->setCurrentIndex(1);
-    }
+    }*/
 }
 
 void qPhotogrammetryDlg::connectToHost()
 {
     QString domain = QString(ui->lineEdit->text());
     QString port = QString::number(ui->spinBox_4->value());
-    ui->plainTextEdit->insertPlainText(QString("Connecting to :")+ domain + QString(" On port :") + port + QString("..."));
-
-    QTextStream log(&logfile);
+    ui->plainTextEdit->setPlainText("");
     SocketStub ss(domain.toStdString(), port.toStdString());
     if (ss.status == -1) {
         if (domain=="127.0.0.1") {
             //start server
         } else {
-            ui->plainTextEdit->insertPlainText(QString("\nSocket status equal -1. Error."));
+            ui->plainTextEdit->insertPlainText(QString("Socket status equal -1. Error."));
         }
     } else {
-        
-        if (!QDir::current().mkdir("PhotogrammetryResults")) {
-            QDir to_rm(QDir::current());
-            to_rm.cd("PhotogrammetryResults");
-            to_rm.removeRecursively();
-            QDir::current().mkdir("PhotogrammetryResults");
+        logfile.setFileName(pathToOutputFolder+"/CClog.txt");
+        if (!logfile.open(QIODevice::Truncate | QIODevice::WriteOnly)) {
+            printf("couldn't open file");
         }
-        ui->plainTextEdit->insertPlainText(QString("\nConected to server, now sending message..."));
-        QString response(ss.send_command(setting_json_obj));
+        QTextStream log(&logfile);
+        char stages='3';
+        if (ui->radioButton->isChecked()) {
+            stages='0';
+        } else if (ui->radioButton_2->isChecked()) {
+            stages='1';
+        } else if (ui->radioButton_3->isChecked()) {
+            stages='2';
+        }
+        ui->plainTextEdit->insertPlainText(QString("Conected to server, now sending message...\n"));
+        char option=options[ui->comboBox->currentIndex()];
+        QString response(ss.send_json(setting_json_obj,option,stages));
+        ui->plainTextEdit->insertPlainText("response:"+response+"\n");
+        log<<"json sent:\n";
         log<<QString(QJsonDocument(setting_json_obj).toJson(QJsonDocument::Indented));
-        ui->plainTextEdit->insertPlainText(response);
-        QString response2(ss.send_files(QString(ui->label_11->text())));
+
+        QString response2(ss.send_files(pathToFolder));
         ui->plainTextEdit->insertPlainText(response2);
-        log<<response2;
-        ui->plainTextEdit->setPlainText("");
+        log<<"files sent\n";
 
         //get results from server and save to folder
         
-        char stage=-2;
+        char stage=1;
         while (stage!=-1) {
-            stage=ss.get_result(stage);
-            ui->plainTextEdit->setPlainText("");
-            ui->plainTextEdit->insertPlainText("actual stage:\n");
-            ui->plainTextEdit->insertPlainText((stage>0 ? QString::number(stage) : "ended")+"\n");
+            char st=stage;
+            stage=ss.get_result(stage,"",&log);
+            if (st!=stage) {
+                QString new_stage("["+QTime::currentTime().toString("hh:mm:ss")+"] stage: "+QString::number(stage)+"\n");
+                ui->plainTextEdit->insertPlainText(new_stage);
+                log<<new_stage;
+            }
             qApp->processEvents();
         }
-        ss.get_result(stage);
+        ui->plainTextEdit->insertPlainText("gathering results\n");
+        log<<"gathering results\n";
+
+        ss.get_result(stage,pathToOutputFolder,&log);
         ss.close_socket();
-        ui->plainTextEdit->insertPlainText("done\n");
+        QStringList fileList(QDir(pathToOutputFolder).entryList(QDir::Files));
+        if (stages>='0') {
+            if (!fileList.contains("colorized.ply")) ui->plainTextEdit->insertPlainText("Missing file colorized.ply, from 1st stage\n");
+            if (!fileList.contains("log.txt")) ui->plainTextEdit->insertPlainText("Missing file log.txt\n");
+            if (!fileList.contains("CClog.txt")) ui->plainTextEdit->insertPlainText("Missing file CClog.txt\n");
+            if (!fileList.contains("synth_0.out")) ui->plainTextEdit->insertPlainText("Missing file synth_0.out, from 1st stage\n");
+        }
+        if (stages>='1') {
+            if (!fileList.contains("dense_pointset.ply")) ui->plainTextEdit->insertPlainText("Missing file dense_pointset.ply, from 2nd stage\n");
+        }
+        if (stages>='2') {
+            if (!fileList.contains("surface.ply")) ui->plainTextEdit->insertPlainText("Missing file surface.ply, from 3rd stage\n");
+            if (!fileList.contains("clean_surface.ply")) ui->plainTextEdit->insertPlainText("Missing file clean_surface.ply, from 3rd stage\n");
+            if (!fileList.contains("textured_clean_surface.obj")) ui->plainTextEdit->insertPlainText("Missing file textured_clean_surface.obj, from 3rd stage");
+            if (!fileList.contains("textured_clean_surface.mtl")) ui->plainTextEdit->insertPlainText("Missing file textured_clean_surface.mtl, from 3rd stage");
+            if (!fileList.contains("textured_clean_surface.conf")) ui->plainTextEdit->insertPlainText("Missing file textured_clean_surface.conf, from 3rd stage");
+            if (!fileList.contains("textured_clean_surface_labeling.vec")) ui->plainTextEdit->insertPlainText("Missing file textured_clean_surface_labeling.vec, from 3rd stage");
+            if (!fileList.contains("textured_clean_surface_data_costs.spt")) ui->plainTextEdit->insertPlainText("Missing file textured_clean_surface_data_costs.spt, from 3rd stage");
+        }
+        if (stages>='3') {
+            //if (!fileList.contains("georeference_output")) ui->plainTextEdit->insertPlainText("Missing file dense_pointset.ply\n, from 4th stage");
+        }
+        ui->plainTextEdit->insertPlainText("finished\n");
+        log<<"finished\n";
     }
 }
 
@@ -389,4 +425,14 @@ void qPhotogrammetryDlg::closeSession()
 void qPhotogrammetryDlg::on_tabWidget_destroyed()
 {
 
+}
+
+void qPhotogrammetryDlg::on_pushButton_2_clicked()
+{
+
+    pathToOutputFolder = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+                                                    "~/",
+                                                    QFileDialog::ShowDirsOnly
+                                                    | QFileDialog::DontResolveSymlinks);
+    ui->label_13->setText("Output directory: "+pathToOutputFolder);
 }

@@ -12,6 +12,7 @@ const QString p2nearest_matching_method[]={"AUTO","BRUTEFORCEL2","ANNL2","CASCAD
 const QString p3refine_intrinsic[]={"ADJUST_ALL","NONE","ADJUST_FOCAL_LENGTH","ADJUST_PRINCIPAL_POINT","ADJUST_DISTORTION","ADJUST_FOCAL_LENGTH|ADJUST_PRINCIPAL_POINT","ADJUST_FOCAL_LENGTH|ADJUST_DISTORTION","ADJUST_PRINCIPAL_POINT|ADJUST_DISTORTION"};
 const QString p4interpolation[]={"cubic","linear","scaling","lsderiv"};
 const QString p5outlier_removal[]={"none","gauss_damping","gauss_clamping"};
+const char options[]={'0','1','2','c'};
 
 namespace Ui {
 class qPhotogrammetryDlg;
@@ -24,6 +25,7 @@ class qPhotogrammetryDlg : public QDialog, public Ui::qPhotogrammetryDlg
 public:
     QFile logfile;
     QString pathToFolder = QString();
+    QString pathToOutputFolder = QString();
     QJsonObject setting_json_obj;
     explicit qPhotogrammetryDlg(QWidget *parent = 0);
     ~qPhotogrammetryDlg();
@@ -38,7 +40,6 @@ public:
 private slots:
     void on_pushButton_clicked();
 
-    //void on_buttonBox_accepted();
     void on_buttonBox_accepted();
 
     void on_buttonBox_rejected();

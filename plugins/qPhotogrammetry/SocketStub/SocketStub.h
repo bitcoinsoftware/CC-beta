@@ -3,6 +3,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QPlainTextEdit>
+#include <QTextStream>
 #include <string>
 #include <cstring>      // Needed for memset
 #include <netdb.h>      // Needed for the socket functions
@@ -13,10 +14,10 @@ public:
     SocketStub( );
     SocketStub(std::string domain, std::string port);
 
-    QString send_command(QJsonObject jsonObject);
-    char* send_f(QByteArray file, QString suffix);
+    QString send_json(QJsonObject jsonObject, char option, char stages);
+    void send_f(QByteArray file, QString suffix);
     QString send_files(QString files);
-    char get_result(char stage);
+    char get_result(char stage, QString output_dir, QTextStream* log);
     void close_socket();
 
     int status;
